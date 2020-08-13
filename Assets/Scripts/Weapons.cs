@@ -7,6 +7,7 @@ public class Weapons : MonoBehaviour
 {
     public PhotonView pview;
     public GameObject pointoffire;
+    float cooldown;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,13 +19,15 @@ public class Weapons : MonoBehaviour
     {
         if (pview.IsMine)
         {
-            if (Input.GetButtonDown("Jump"))
+            cooldown -= Time.deltaTime;
+            if (Input.GetButtonDown("Jump")&&cooldown<0)
             {
                GameObject ob= (GameObject) 
                     PhotonNetwork.Instantiate("Bullet", pointoffire.transform.position,
                     pointoffire.transform.rotation, 0);
-               
-               
+                    cooldown = 3;
+
+
             }
         }
     }
