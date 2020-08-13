@@ -23,8 +23,8 @@ public class Weapons : MonoBehaviour
                GameObject ob= (GameObject) 
                     PhotonNetwork.Instantiate("Bullet", pointoffire.transform.position,
                     pointoffire.transform.rotation, 0);
-                ob.GetComponent<Rigidbody>().AddForce(pointoffire.transform.forward * 100, ForceMode.Impulse);
-                Destroy(ob, 5);
+               
+               
             }
         }
     }
