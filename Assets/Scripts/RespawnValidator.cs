@@ -19,6 +19,7 @@ public class RespawnValidator : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if(other.CompareTag("Player"))
         thing = other.gameObject;
     }
     private void OnTriggerExit(Collider other)
