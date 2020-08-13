@@ -13,7 +13,10 @@ public class TankPlayer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (pview.IsMine)
+        {
+            Camera.main.GetComponent<NetCamera>().SetPlayer(gameObject);
+        }
     }
 
     void FixedUpdate()
