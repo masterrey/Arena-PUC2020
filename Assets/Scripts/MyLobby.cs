@@ -3,11 +3,13 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class MyLobby : MonoBehaviourPunCallbacks
 {
     public string PlayerName;
     public GameObject roomPanel;
+    public InputField ifName;
+    public GameObject required;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,8 +24,16 @@ public class MyLobby : MonoBehaviourPunCallbacks
 
     public void PlayGame()
     {
-        PhotonNetwork.LocalPlayer.NickName = PlayerName;
-        PhotonNetwork.ConnectUsingSettings();
+        if (ifName.text.Length > 0)
+        {
+            PlayerName = ifName.text;
+            PhotonNetwork.LocalPlayer.NickName = PlayerName;
+            PhotonNetwork.ConnectUsingSettings();
+        }
+        else
+        {
+            required.SetActive(true);
+        }
 
     }
 
