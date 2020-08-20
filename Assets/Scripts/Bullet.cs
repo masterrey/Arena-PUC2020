@@ -30,6 +30,17 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position, 20, Vector3.up);
+
+        foreach(RaycastHit hit in hits)
+        {
+            if (hit.collider.gameObject.CompareTag("Player"))
+            {
+                hit.collider.gameObject.GetComponent<Rigidbody>().AddExplosionForce(100, transform.position, 20);
+                hit.collider.gameObject.SendMessage("DamageTaken");
+            }
+        }
+
         Instantiate(explosion, transform.position, Quaternion.identity);
         PhotonNetwork.Destroy(gameObject);
     }

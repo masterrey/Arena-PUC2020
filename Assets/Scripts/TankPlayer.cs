@@ -10,6 +10,7 @@ public class TankPlayer : MonoBehaviour
     float power;
     float turn;
     public PhotonView pview;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -45,4 +46,6 @@ public class TankPlayer : MonoBehaviour
         }
 
     }
+
+    
 }

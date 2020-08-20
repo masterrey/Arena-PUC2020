@@ -7,6 +7,7 @@ public class TankID : MonoBehaviour
 {
     public TextMesh name;
     public PhotonView pview;
+    public int lives = 100;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,5 +19,25 @@ public class TankID : MonoBehaviour
     {
         // name.transform.LookAt(Camera.main.transform);
         name.transform.forward = transform.position - Camera.main.transform.position;
+
+        if (pview.IsMine) {
+            if (lives < 0)
+            {
+                PhotonNetwork.Destroy(gameObject);
+            }
+        }
+    }
+
+    public void DamageTaken()
+    {
+        pview.RPC("DamageCall", RpcTarget.Others, null);
+    }
+
+    [PunRPC]
+    void DamageCall()
+    {
+
+        lives--;
+        name.text = pview.Owner.NickName+" "+lives.ToString();
     }
 }
