@@ -7,12 +7,13 @@ public class Bullet : MonoBehaviour
 {
     public Rigidbody rdb;
     public PhotonView pview;
+    public GameObject explosion;
 
     // Start is called before the first frame update
     void Start()
     {
         rdb.AddForce(transform.forward * 100, ForceMode.Impulse);
-        Invoke("SelfDestroy", 3);
+        Invoke("SelfDestroy", 10);
 
     }
 
@@ -24,6 +25,12 @@ public class Bullet : MonoBehaviour
 
     void SelfDestroy()
     {
+        PhotonNetwork.Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Instantiate(explosion, transform.position, Quaternion.identity);
         PhotonNetwork.Destroy(gameObject);
     }
 }
