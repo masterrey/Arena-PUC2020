@@ -148,4 +148,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rdb: {fileID: 2977540357867175736}
   pview: {fileID: 8109003297123489633}
-  Explosion: {fileID: 100000, guid: 15ca5b8fa431dc04291a79cadcd19874, type: 3}
+  explosion: {fileID: 100000, guid: 15ca5b8fa431dc04291a79cadcd19874, type: 3}

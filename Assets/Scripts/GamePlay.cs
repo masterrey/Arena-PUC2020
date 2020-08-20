@@ -10,6 +10,7 @@ public class GamePlay : MonoBehaviour
     void Start()
     {
         Invoke("StartGame", 3);
+       
     }
 
     // Update is called once per frame
