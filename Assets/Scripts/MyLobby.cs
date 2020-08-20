@@ -10,6 +10,7 @@ public class MyLobby : MonoBehaviourPunCallbacks
     public GameObject roomPanel;
     public InputField ifName;
     public GameObject required;
+    public GameObject namecontent;
     // Start is called before the first frame update
     void Start()
     {
@@ -57,7 +58,11 @@ public class MyLobby : MonoBehaviourPunCallbacks
     }
     public override void OnJoinedRoom()
     {
-        PhotonNetwork.LoadLevel("Level1");
+        GameObject ob=PhotonNetwork.Instantiate("PlayerName", Vector3.zero, Quaternion.identity);
+        //ob.transform.parent = namecontent.transform;
+        
+        //PhotonNetwork.LoadLevel("Level1");
+
     }
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
