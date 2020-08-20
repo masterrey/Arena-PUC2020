@@ -2,15 +2,17 @@
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class MyLobby : MonoBehaviourPunCallbacks
 {
     public string PlayerName;
     public GameObject roomPanel;
     public InputField ifName;
     public GameObject required;
-    public GameObject namecontent;
+    public PlayerName[] playersNames;
     // Start is called before the first frame update
     void Start()
     {
@@ -58,14 +60,33 @@ public class MyLobby : MonoBehaviourPunCallbacks
     }
     public override void OnJoinedRoom()
     {
-        GameObject ob=PhotonNetwork.Instantiate("PlayerName", Vector3.zero, Quaternion.identity);
-        //ob.transform.parent = namecontent.transform;
-        
+        PhotonNetwork.Instantiate("PlayerName", Vector3.zero, Quaternion.identity);
+
+        InvokeRepeating("CheckAllReady", 1, 1);
         //PhotonNetwork.LoadLevel("Level1");
 
     }
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         Debug.Log("O jogador "+newPlayer.NickName+" Entrou na Sala");
+       
+        
+    }
+
+
+    void CheckAllReady() 
+    {
+        print("Checando...");
+        playersNames = FindObjectsOfType<PlayerName>();
+        bool allready = true;
+        if (playersNames.Length > 1)
+        {
+            allready = playersNames.All(param => param.ready);
+           
+            if (allready)
+            {
+                PhotonNetwork.LoadLevel("Level1");
+            }
+        }
     }
 }

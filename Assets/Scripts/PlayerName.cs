@@ -37,7 +37,7 @@ public class PlayerName : MonoBehaviour
     void StatusChange(bool myready)
     {
         readyToggle.isOn = myready;
-
+        ready = myready;
     }
 
 
