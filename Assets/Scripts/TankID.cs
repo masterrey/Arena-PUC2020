@@ -28,15 +28,15 @@ public class TankID : MonoBehaviour
         }
     }
 
-    public void DamageTaken()
+    public void DamageTaken(Vector3 pos)
     {
-        pview.RPC("DamageCall", RpcTarget.Others, null);
+        pview.RPC("DamageCall", RpcTarget.Others, pos);
     }
 
     [PunRPC]
-    void DamageCall()
+    void DamageCall(Vector3 pos)
     {
-
+        GetComponent<Rigidbody>().AddExplosionForce(100, pos, 20);
         lives--;
         name.text = pview.Owner.NickName+" "+lives.ToString();
     }

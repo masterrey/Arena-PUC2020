@@ -198,6 +198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: {fileID: 1160344179163946536}
   pview: {fileID: 1469698909433272980}
+  lives: 100
 --- !u!114 &8274099709016279661
 MonoBehaviour:
   m_ObjectHideFlags: 0

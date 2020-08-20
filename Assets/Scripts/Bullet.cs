@@ -36,8 +36,8 @@ public class Bullet : MonoBehaviour
         {
             if (hit.collider.gameObject.CompareTag("Player"))
             {
-                hit.collider.gameObject.GetComponent<Rigidbody>().AddExplosionForce(100, transform.position, 20);
-                hit.collider.gameObject.SendMessage("DamageTaken");
+               
+                hit.collider.gameObject.SendMessage("DamageTaken",transform.position);
             }
         }
 
