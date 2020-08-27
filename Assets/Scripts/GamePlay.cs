@@ -6,6 +6,8 @@ using UnityEngine;
 public class GamePlay : MonoBehaviour
 {
     public GameObject[] respawns;
+    TankID[] tanks;
+    public PhotonView pview;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,11 +27,27 @@ public class GamePlay : MonoBehaviour
         if (respawns[indexrespawn].GetComponent<RespawnValidator>().thing == null)
         {
             PhotonNetwork.Instantiate("TankFree", respawns[indexrespawn].transform.position, respawns[indexrespawn].transform.rotation, 0);
+            InvokeRepeating("CheckStatus", 3, 1);
         }
         else
         {
             Invoke("StartGame", .1f);
         }
 
+    }
+
+    void CheckStatus()
+    {
+        tanks = FindObjectsOfType<TankID>();
+        if (tanks.Length < 1)
+        {
+            pview.RPC("VictoryTank", RpcTarget.AllBuffered);
+        }
+    }
+    [PunRPC]
+    void VictoryTank()
+    {
+        tanks = FindObjectsOfType<TankID>();
+        Camera.main.GetComponent<NetCamera>().SetPlayer(tanks[0].gameObject);
     }
 }

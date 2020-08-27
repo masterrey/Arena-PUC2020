@@ -85,6 +85,7 @@ public class MyLobby : MonoBehaviourPunCallbacks
            
             if (allready)
             {
+                PhotonNetwork.CurrentRoom.IsOpen = false; //fecha a sala pra ninguem entrar
                 PhotonNetwork.LoadLevel("Level1");
             }
         }
