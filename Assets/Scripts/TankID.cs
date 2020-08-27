@@ -30,14 +30,22 @@ public class TankID : MonoBehaviour
 
     public void DamageTaken(Vector3 pos)
     {
-        pview.RPC("DamageCall", RpcTarget.Others, pos);
+        if (pview.IsMine)
+        {
+            float distance = Vector3.Distance(pos, transform.position);
+
+            lives -= (int)(50 / (distance + 1));
+
+            pview.RPC("DamageCall", RpcTarget.All, pos, lives);
+
+            GetComponent<Rigidbody>().AddExplosionForce(1000, pos, 20);
+        }
     }
 
     [PunRPC]
-    void DamageCall(Vector3 pos)
+    void DamageCall(Vector3 pos,int livesRemain)
     {
-        GetComponent<Rigidbody>().AddExplosionForce(100, pos, 20);
-        lives--;
+        lives = livesRemain;
         name.text = pview.Owner.NickName+" "+lives.ToString();
     }
 }
