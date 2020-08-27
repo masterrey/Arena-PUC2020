@@ -13,6 +13,7 @@ public class Bullet : MonoBehaviour
     void Start()
     {
         rdb.AddForce(transform.forward * 100, ForceMode.Impulse);
+        if(pview.IsMine)
         Invoke("SelfDestroy", 10);
 
     }
@@ -42,6 +43,8 @@ public class Bullet : MonoBehaviour
         }
 
         Instantiate(explosion, transform.position, Quaternion.identity);
+
+        if(pview.IsMine)
         PhotonNetwork.Destroy(gameObject);
     }
 }
