@@ -8,6 +8,7 @@ public class GamePlay : MonoBehaviour
     public GameObject[] respawns;
     TankID[] tanks;
     public PhotonView pview;
+    public GameObject winner;
     // Start is called before the first frame update
     void Start()
     {
@@ -47,7 +48,10 @@ public class GamePlay : MonoBehaviour
     [PunRPC]
     void VictoryTank()
     {
+       
         tanks = FindObjectsOfType<TankID>();
         Camera.main.GetComponent<NetCamera>().SetPlayer(tanks[0].gameObject);
+        winner.transform.position = tanks[0].transform.position;
+        winner.SetActive(true);
     }
 }
