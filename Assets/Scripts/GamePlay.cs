@@ -40,7 +40,7 @@ public class GamePlay : MonoBehaviour
     void CheckStatus()
     {
         tanks = FindObjectsOfType<TankID>();
-        if (tanks.Length < 1)
+        if (tanks.Length < 2)
         {
             pview.RPC("VictoryTank", RpcTarget.AllBuffered);
         }
