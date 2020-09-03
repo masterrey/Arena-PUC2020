@@ -9,6 +9,7 @@ public class GamePlay : MonoBehaviour
     TankID[] tanks;
     public PhotonView pview;
     public GameObject winner;
+    public GameRoom gameRoom;
     // Start is called before the first frame update
     void Start()
     {
@@ -53,5 +54,12 @@ public class GamePlay : MonoBehaviour
         Camera.main.GetComponent<NetCamera>().SetPlayer(tanks[0].gameObject);
         winner.transform.position = tanks[0].transform.position;
         winner.SetActive(true);
+        Invoke("EnableGameRoom", 5);
+    }
+
+
+    void EnableGameRoom()
+    {
+        gameRoom.enabled = true;
     }
 }

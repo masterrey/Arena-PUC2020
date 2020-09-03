@@ -24,6 +24,18 @@ public class PlayerName : MonoBehaviour
 
     }
 
+    public void Reset()
+    {
+        nametext.text = pview.Owner.NickName;
+        GameObject content = GameObject.FindGameObjectWithTag("PlayerList");
+        transform.parent = content.transform;
+        readyToggle.isOn = false;
+        if (pview.IsMine)
+        {
+            readyToggle.interactable = true;
+        }
+    }
+
     public void ReadyisChange()
     {
         if (ready != readyToggle.isOn)
