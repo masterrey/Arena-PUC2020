@@ -34,11 +34,11 @@ public class TankID : MonoBehaviour
         {
             float distance = Vector3.Distance(pos, transform.position);
 
-            lives -= (int)(50 / (distance + 1));
-
+            //lives -= (int)(50 / (distance + 1));
+            lives -= 10;
             pview.RPC("DamageCall", RpcTarget.All, pos, lives);
 
-            GetComponent<Rigidbody>().AddExplosionForce(100000, pos, 20);
+            GetComponent<Rigidbody>().AddExplosionForce(1000000, pos, 20);
         }
     }
 
