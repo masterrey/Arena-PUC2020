@@ -21,7 +21,7 @@ public class TankID : MonoBehaviour
         name.transform.forward = transform.position - Camera.main.transform.position;
 
         if (pview.IsMine) {
-            if (lives < 0)
+            if (lives <= 0)
             {
                 PhotonNetwork.Destroy(gameObject);
             }

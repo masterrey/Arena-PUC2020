@@ -12,13 +12,12 @@ public class GameRoom : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        roompanel.SetActive(true);
         players = FindObjectsOfType<PlayerName>();
         foreach(PlayerName player in players)
         {
             player.Reset();
         }
-
-        roompanel.SetActive(true);
         InvokeRepeating("CheckAllReady", 1, 1);
     }
 

@@ -15,6 +15,7 @@ public class GamePlay : MonoBehaviour
     {
         Invoke("StartGame", 3);
        
+
     }
 
     // Update is called once per frame
@@ -44,12 +45,15 @@ public class GamePlay : MonoBehaviour
         if (tanks.Length < 2)
         {
             pview.RPC("VictoryTank", RpcTarget.AllBuffered);
+            PhotonNetwork.Instantiate("PlayerName", Vector3.zero, Quaternion.identity);
+            CancelInvoke("CheckStatus");
         }
     }
     [PunRPC]
     void VictoryTank()
     {
-       
+        
+
         tanks = FindObjectsOfType<TankID>();
         Camera.main.GetComponent<NetCamera>().SetPlayer(tanks[0].gameObject);
         winner.transform.position = tanks[0].transform.position;

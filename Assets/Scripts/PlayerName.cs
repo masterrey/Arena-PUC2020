@@ -12,9 +12,11 @@ public class PlayerName : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         nametext.text = pview.Owner.NickName;
 
         GameObject content = GameObject.FindGameObjectWithTag("PlayerList");
+        if(content)
         transform.parent = content.transform;
 
         if (pview.IsMine)
@@ -33,6 +35,10 @@ public class PlayerName : MonoBehaviour
         if (pview.IsMine)
         {
             readyToggle.interactable = true;
+        }
+        else
+        {
+            readyToggle.interactable = false;
         }
     }
 
