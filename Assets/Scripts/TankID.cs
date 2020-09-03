@@ -38,7 +38,7 @@ public class TankID : MonoBehaviour
 
             pview.RPC("DamageCall", RpcTarget.All, pos, lives);
 
-            GetComponent<Rigidbody>().AddExplosionForce(1000, pos, 20);
+            GetComponent<Rigidbody>().AddExplosionForce(100000, pos, 20);
         }
     }
 
