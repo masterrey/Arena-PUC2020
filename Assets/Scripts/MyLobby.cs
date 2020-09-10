@@ -13,18 +13,12 @@ public class MyLobby : MonoBehaviourPunCallbacks
     public InputField ifName;
     public GameObject required;
     public PlayerName[] playersNames;
-    // Start is called before the first frame update
-    void Start()
+    public enum GameType
     {
-
+        Tank,FPS
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+    public GameType gameType;
+    
     public void PlayGame()
     {
         if (ifName.text.Length > 0)
@@ -40,9 +34,20 @@ public class MyLobby : MonoBehaviourPunCallbacks
 
     }
 
-    public void JoinRoom()
+    public void JoinRoomFPS()
     {
-        PhotonNetwork.JoinRandomRoom();
+        gameType = GameType.FPS;
+        RoomOptions rOp = new RoomOptions();
+        rOp.MaxPlayers = 20;
+        PhotonNetwork.JoinOrCreateRoom("FPSRoom01",rOp,TypedLobby.Default,null);
+        //PhotonNetwork.JoinRandomRoom();
+    }
+     public void JoinRoomTank()
+    {
+        gameType = GameType.Tank;
+        RoomOptions rOp = new RoomOptions();
+        rOp.MaxPlayers = 20;
+        PhotonNetwork.JoinOrCreateRoom("TankRoom01",rOp, TypedLobby.Default, null);
     }
 
     public override void OnConnectedToMaster()
@@ -86,7 +91,16 @@ public class MyLobby : MonoBehaviourPunCallbacks
             if (allready)
             {
                 PhotonNetwork.CurrentRoom.IsOpen = false; //fecha a sala pra ninguem entrar
-                PhotonNetwork.LoadLevel("Level1");
+
+                switch (gameType)
+                {
+                    case GameType.Tank:
+                        PhotonNetwork.LoadLevel("Level1");
+                        break;
+                    case GameType.FPS:
+                        PhotonNetwork.LoadLevel("Level2");
+                        break;
+                }
             }
         }
     }
