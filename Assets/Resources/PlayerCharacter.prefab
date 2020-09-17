@@ -1214,6 +1214,7 @@ MonoBehaviour:
   aimref: {fileID: 432148388729459293}
   vfxshoot: {fileID: 5690413003210599653}
   audShoot: {fileID: 7496979374018561586}
+  laser: {fileID: 1758184141}
 --- !u!114 &5523747207298819315
 MonoBehaviour:
   m_ObjectHideFlags: 0

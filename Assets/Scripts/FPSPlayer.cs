@@ -31,6 +31,10 @@ public class FPSPlayer : MonoBehaviour
         {
             Camera.main.GetComponent<NetCamera>().SetPlayer(gameObject);
         }
+        else
+        {
+            laser.SetActive(false);
+        }
 
     }
 
