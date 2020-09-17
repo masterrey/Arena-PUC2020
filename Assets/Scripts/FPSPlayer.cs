@@ -53,7 +53,7 @@ public class FPSPlayer : MonoBehaviour
             {
                 pview.RPC("Shoot", RpcTarget.AllBuffered, null);
             }
-            Cursor.lockState = CursorLockMode.Locked;
+           
         }
         
         else

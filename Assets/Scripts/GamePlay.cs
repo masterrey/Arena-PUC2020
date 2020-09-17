@@ -28,6 +28,7 @@ public class GamePlay : MonoBehaviour
 
     void StartGame()
     {
+        Cursor.lockState = CursorLockMode.Locked;
         int indexrespawn = Random.Range(0, respawns.Length);
         if (respawns[indexrespawn].GetComponent<RespawnValidator>().thing == null)
         {
@@ -52,7 +53,7 @@ public class GamePlay : MonoBehaviour
         {
             pview.RPC("VictoryTank", RpcTarget.AllBuffered);
             PhotonNetwork.Instantiate("PlayerName", Vector3.zero, Quaternion.identity);
-            CancelInvoke("CheckStatus");
+            CancelInvoke("CheckStatusTank");
         }
     }
     void CheckStatusFPS()
@@ -62,14 +63,15 @@ public class GamePlay : MonoBehaviour
         {
             pview.RPC("VictoryFPS", RpcTarget.AllBuffered);
             PhotonNetwork.Instantiate("PlayerName", Vector3.zero, Quaternion.identity);
-            CancelInvoke("CheckStatus");
+            CancelInvoke("CheckStatusFPS");
         }
     }
 
     [PunRPC]
     void VictoryTank()
     {
-        
+
+        Cursor.lockState = CursorLockMode.None;
 
         tanks = FindObjectsOfType<TankID>();
         Camera.main.GetComponent<NetCamera>().SetPlayer(tanks[0].gameObject);
