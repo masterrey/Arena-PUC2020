@@ -7,6 +7,7 @@ public class GamePlay : MonoBehaviour
 {
     public GameObject[] respawns;
     TankID[] tanks;
+    FPSID[] fpss;
     public PhotonView pview;
     public GameObject winner;
     public GameRoom gameRoom;
@@ -31,7 +32,11 @@ public class GamePlay : MonoBehaviour
         if (respawns[indexrespawn].GetComponent<RespawnValidator>().thing == null)
         {
             PhotonNetwork.Instantiate(playerPrefab, respawns[indexrespawn].transform.position, respawns[indexrespawn].transform.rotation, 0);
-            InvokeRepeating("CheckStatus", 3, 1);
+           if(GameRoutines.gameType==GameRoutines.GameType.FPS)
+            InvokeRepeating("CheckStatusFPS", 3, 1);
+
+           if (GameRoutines.gameType == GameRoutines.GameType.Tank)
+            InvokeRepeating("CheckStatusTank", 3, 1);
         }
         else
         {
@@ -40,7 +45,7 @@ public class GamePlay : MonoBehaviour
 
     }
 
-    void CheckStatus()
+    void CheckStatusTank()
     {
         tanks = FindObjectsOfType<TankID>();
         if (tanks.Length < 2)
@@ -50,6 +55,17 @@ public class GamePlay : MonoBehaviour
             CancelInvoke("CheckStatus");
         }
     }
+    void CheckStatusFPS()
+        {
+            fpss = FindObjectsOfType<FPSID>();
+        if (fpss.Length < 2)
+        {
+            pview.RPC("VictoryFPS", RpcTarget.AllBuffered);
+            PhotonNetwork.Instantiate("PlayerName", Vector3.zero, Quaternion.identity);
+            CancelInvoke("CheckStatus");
+        }
+    }
+
     [PunRPC]
     void VictoryTank()
     {
@@ -58,6 +74,18 @@ public class GamePlay : MonoBehaviour
         tanks = FindObjectsOfType<TankID>();
         Camera.main.GetComponent<NetCamera>().SetPlayer(tanks[0].gameObject);
         winner.transform.position = tanks[0].transform.position;
+        winner.SetActive(true);
+        Invoke("EnableGameRoom", 5);
+    }
+
+    [PunRPC]
+    void VictoryFPS()
+    {
+
+
+        fpss = FindObjectsOfType<FPSID>();
+        Camera.main.GetComponent<NetCamera>().SetPlayer(tanks[0].gameObject);
+        winner.transform.position = fpss[0].transform.position;
         winner.SetActive(true);
         Invoke("EnableGameRoom", 5);
     }

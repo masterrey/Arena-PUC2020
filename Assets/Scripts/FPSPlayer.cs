@@ -2,19 +2,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class FPSPlayer : MonoBehaviour
 {
     PhotonView pview;
     float power;
     float turn;
-    float turnAxis;
+    float turnAxisX;
+    float turnAxisY;
     Rigidbody rdb;
     Animator anim;
     bool run = false;
     Vector3 localVelocity;
     public GameObject aim;
     public int live = 100;
+    public Transform aimref;
+    public VisualEffect vfxshoot;
+    public AudioSource audShoot;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,26 +41,36 @@ public class FPSPlayer : MonoBehaviour
             
             power = Input.GetAxis("Vertical");
             turn = Input.GetAxis("Horizontal");
-            turnAxis = Input.GetAxis("Mouse X");
+            turnAxisX = Input.GetAxis("Mouse X");
+            turnAxisY = Input.GetAxis("Mouse Y");
             run = Input.GetButton("Fire3");
             if (Input.GetButtonDown("Fire1"))
             {
                 pview.RPC("Shoot", RpcTarget.AllBuffered, null);
             }
+            Cursor.lockState = CursorLockMode.Locked;
         }
+        
         else
         {
-            gameObject.tag = "RemotePlayer";
+            Collider[] cols = GetComponentsInChildren<Collider>();
+            foreach(Collider col in cols)
+            {
+                col.gameObject.tag="RemotePlayer";
+            }
+            
         }
-
+        
     }
 
     private void FixedUpdate()
     {
 
-        if (pview.IsMine)
+       if (pview.IsMine)
         {
-            transform.Rotate(transform.up * turnAxis);
+            aimref.Rotate(new Vector3(0,.1f,1) * turnAxisY,Space.Self);
+
+            transform.Rotate(transform.up * turnAxisX);
            
             Vector3 localmovement = transform.TransformDirection(new Vector3(turn , 0, power ));
 
@@ -72,11 +87,12 @@ public class FPSPlayer : MonoBehaviour
 
             localVelocity = transform.InverseTransformDirection(rdb.velocity) / 2;
         }
+       
         else
         {
             localVelocity =Vector3.Lerp(localVelocity,transform.InverseTransformDirection(rdb.velocity) / 2,Time.fixedDeltaTime);
         }
-
+        
         
         
         anim.SetFloat("VelX", localVelocity.x);
@@ -86,11 +102,13 @@ public class FPSPlayer : MonoBehaviour
     [PunRPC]
     void Shoot()
     {
-        if(Physics.Raycast(aim.transform.position,aim.transform.forward,out RaycastHit hit, 1000))
+        vfxshoot.Play();
+        audShoot.Play();
+        if (Physics.Raycast(aim.transform.position,aim.transform.forward,out RaycastHit hit, 1000))
         {
             if (hit.collider.CompareTag("RemotePlayer"))
             {
-                PhotonView remotepview = hit.collider.GetComponent<PhotonView>();
+                PhotonView remotepview = hit.collider.GetComponentInParent<PhotonView>();
                 if (remotepview)
                 {
                     remotepview.RPC("Shooted", RpcTarget.AllBuffered,null);
@@ -109,5 +127,10 @@ public class FPSPlayer : MonoBehaviour
             anim.SetBool("Died", true);
             this.enabled = false;
         }
+    }
+
+    private void OnAnimatorIK(int layerIndex)
+    {
+       anim.SetBoneLocalRotation(HumanBodyBones.Spine, aimref.localRotation);
     }
 }

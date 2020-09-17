@@ -13,11 +13,7 @@ public class MyLobby : MonoBehaviourPunCallbacks
     public InputField ifName;
     public GameObject required;
     public PlayerName[] playersNames;
-    public enum GameType
-    {
-        Tank,FPS
-    }
-    public GameType gameType;
+   
     
     public void PlayGame()
     {
@@ -36,7 +32,7 @@ public class MyLobby : MonoBehaviourPunCallbacks
 
     public void JoinRoomFPS()
     {
-        gameType = GameType.FPS;
+        GameRoutines.gameType = GameRoutines.GameType.FPS;
         RoomOptions rOp = new RoomOptions();
         rOp.MaxPlayers = 20;
         PhotonNetwork.JoinOrCreateRoom("FPSRoom01",rOp,TypedLobby.Default,null);
@@ -44,7 +40,7 @@ public class MyLobby : MonoBehaviourPunCallbacks
     }
      public void JoinRoomTank()
     {
-        gameType = GameType.Tank;
+        GameRoutines.gameType = GameRoutines.GameType.Tank;
         RoomOptions rOp = new RoomOptions();
         rOp.MaxPlayers = 20;
         PhotonNetwork.JoinOrCreateRoom("TankRoom01",rOp, TypedLobby.Default, null);
@@ -92,12 +88,12 @@ public class MyLobby : MonoBehaviourPunCallbacks
             {
                 PhotonNetwork.CurrentRoom.IsOpen = false; //fecha a sala pra ninguem entrar
 
-                switch (gameType)
+                switch (GameRoutines.gameType)
                 {
-                    case GameType.Tank:
+                    case GameRoutines.GameType.Tank:
                         PhotonNetwork.LoadLevel("Level1");
                         break;
-                    case GameType.FPS:
+                    case GameRoutines.GameType.FPS:
                         PhotonNetwork.LoadLevel("Level2");
                         break;
                 }

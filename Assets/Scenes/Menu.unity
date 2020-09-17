@@ -1858,7 +1858,6 @@ MonoBehaviour:
   ifName: {fileID: 1201312791}
   required: {fileID: 671921143}
   playersNames: []
-  gameType: 0
 --- !u!4 &1569900841
 Transform:
   m_ObjectHideFlags: 0
