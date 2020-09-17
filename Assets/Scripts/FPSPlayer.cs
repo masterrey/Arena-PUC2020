@@ -20,6 +20,7 @@ public class FPSPlayer : MonoBehaviour
     public Transform aimref;
     public VisualEffect vfxshoot;
     public AudioSource audShoot;
+    public GameObject laser;
     // Start is called before the first frame update
     void Start()
     {
@@ -126,7 +127,13 @@ public class FPSPlayer : MonoBehaviour
         {
             anim.SetBool("Died", true);
             this.enabled = false;
+            Invoke("SelfDestroy", 5);
         }
+    }
+
+    void SelfDestroy()
+    {
+        PhotonNetwork.Destroy(gameObject);
     }
 
     private void OnAnimatorIK(int layerIndex)

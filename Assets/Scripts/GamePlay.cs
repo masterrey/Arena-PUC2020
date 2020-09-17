@@ -84,7 +84,7 @@ public class GamePlay : MonoBehaviour
 
 
         fpss = FindObjectsOfType<FPSID>();
-        Camera.main.GetComponent<NetCamera>().SetPlayer(tanks[0].gameObject);
+        Camera.main.GetComponent<NetCamera>().SetPlayer(fpss[0].gameObject);
         winner.transform.position = fpss[0].transform.position;
         winner.SetActive(true);
         Invoke("EnableGameRoom", 5);
