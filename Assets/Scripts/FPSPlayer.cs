@@ -12,6 +12,9 @@ public class FPSPlayer : MonoBehaviour
     Rigidbody rdb;
     Animator anim;
     bool run = false;
+    Vector3 localVelocity;
+    public GameObject aim;
+    public int live = 100;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +33,7 @@ public class FPSPlayer : MonoBehaviour
     {
         if (pview.IsMine)
         {
+            
             power = Input.GetAxis("Vertical");
             turn = Input.GetAxis("Horizontal");
             turnAxis = Input.GetAxis("Mouse X");
@@ -39,11 +43,16 @@ public class FPSPlayer : MonoBehaviour
                 pview.RPC("Shoot", RpcTarget.AllBuffered, null);
             }
         }
+        else
+        {
+            gameObject.tag = "RemotePlayer";
+        }
 
     }
 
     private void FixedUpdate()
     {
+
         if (pview.IsMine)
         {
             transform.Rotate(transform.up * turnAxis);
@@ -60,9 +69,15 @@ public class FPSPlayer : MonoBehaviour
             }
 
             rdb.velocity = new Vector3(localmovement.x, rdb.velocity.y, localmovement.z);
+
+            localVelocity = transform.InverseTransformDirection(rdb.velocity) / 2;
+        }
+        else
+        {
+            localVelocity =Vector3.Lerp(localVelocity,transform.InverseTransformDirection(rdb.velocity) / 2,Time.fixedDeltaTime);
         }
 
-        Vector3 localVelocity = transform.InverseTransformDirection(rdb.velocity)/2;
+        
         
         anim.SetFloat("VelX", localVelocity.x);
         anim.SetFloat("VelZ", localVelocity.z);
@@ -71,6 +86,28 @@ public class FPSPlayer : MonoBehaviour
     [PunRPC]
     void Shoot()
     {
+        if(Physics.Raycast(aim.transform.position,aim.transform.forward,out RaycastHit hit, 1000))
+        {
+            if (hit.collider.CompareTag("RemotePlayer"))
+            {
+                PhotonView remotepview = hit.collider.GetComponent<PhotonView>();
+                if (remotepview)
+                {
+                    remotepview.RPC("Shooted", RpcTarget.AllBuffered,null);
+                }
+            }
+        }
         anim.SetTrigger("Shoot");
+    }
+    [PunRPC]
+    public void Shooted()
+    {
+        live-=10;
+        anim.SetTrigger("Damage");
+        if (live < 1)
+        {
+            anim.SetBool("Died", true);
+            this.enabled = false;
+        }
     }
 }
