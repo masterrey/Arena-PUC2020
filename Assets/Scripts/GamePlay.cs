@@ -84,6 +84,7 @@ public class GamePlay : MonoBehaviour
     void VictoryFPS()
     {
 
+        Cursor.lockState = CursorLockMode.None;
 
         fpss = FindObjectsOfType<FPSID>();
         Camera.main.GetComponent<NetCamera>().SetPlayer(fpss[0].gameObject);
