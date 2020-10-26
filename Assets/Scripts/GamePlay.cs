@@ -30,6 +30,14 @@ public class GamePlay : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         int indexrespawn = Random.Range(0, respawns.Length);
+        if (GameRoutines.gameType == GameRoutines.GameType.Game2D)
+        {
+            PhotonNetwork.Instantiate(playerPrefab, respawns[indexrespawn].transform.position, respawns[indexrespawn].transform.rotation, 0);
+
+            return;
+        }
+     
+
         if (respawns[indexrespawn].GetComponent<RespawnValidator>().thing == null)
         {
             PhotonNetwork.Instantiate(playerPrefab, respawns[indexrespawn].transform.position, respawns[indexrespawn].transform.rotation, 0);

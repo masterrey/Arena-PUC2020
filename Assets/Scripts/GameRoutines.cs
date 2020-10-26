@@ -6,7 +6,7 @@ public class GameRoutines
 {
     public enum GameType
     {
-        Tank, FPS
+        Tank, FPS ,Game2D
     }
 
     public static GameType gameType;
